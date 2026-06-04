@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBuddy AI | Premium Interactive Learning Hub</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Boxicons for modern premium icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Link to our stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Animated background mesh -->
+    <div class="bg-mesh"></div>
+
+    <div class="app-container">
+        <!-- Sidebar Workspace Manager -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="brand">
+                    <div class="brand-logo">
+                        <i class='bx bxs-graduation'></i>
+                    </div>
+                    <div class="brand-info">
+                        <h2>StudyBuddy AI</h2>
+                        <span>Interactive Learning Hub</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Area Section -->
+            <div class="sidebar-section">
+                <h3 class="section-title"><i class='bx bx-cabinet'></i> Document Hub</h3>
+                <div class="drop-zone" id="drop-zone">
+                    <input type="file" id="pdf-file" accept=".pdf" style="display: none;">
+                    <div class="drop-zone-inner" onclick="document.getElementById('pdf-file').click()">
+                        <i class='bx bx-cloud-upload upload-icon'></i>
+                        <span class="drop-text">Click or drag PDF here</span>
+                        <span class="drop-subtext">PDF up to 100MB+</span>
+                    </div>
+                </div>
+                
+                <!-- Upload Status Container -->
+                <div id="upload-status" class="status-msg"></div>
+
+                <!-- Active File Info -->
+                <div id="file-info-container" style="display: none;">
+                    <div class="file-card">
+                        <div class="file-card-details">
+                            <i class='bx bxs-file-pdf file-pdf-icon'></i>
+                            <div class="file-meta">
+                                <span class="file-name" id="active-filename">document.pdf</span>
+                                <span class="file-status" id="active-status">Active</span>
+                            </div>
+                        </div>
+                        <button class="btn-clear-file" id="btn-clear-file" title="Remove PDF">
+                            <i class='bx bx-trash-alt'></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Action Prompts -->
+            <div class="sidebar-section">
+                <h3 class="section-title"><i class='bx bx-bolt'></i> Quick Prompts</h3>
+                <div class="quick-prompts-grid">
+                    <button class="quick-prompt-btn" data-prompt="Summarize the core takeaways and main concepts of this document in structured bullet points.">
+                        <i class='bx bx-align-left'></i>
+                        <span>Executive Summary</span>
+                    </button>
+                    <button class="quick-prompt-btn" data-prompt="List the 5 most important terms, acronyms, or formulas defined in this document along with their meaning.">
+                        <i class='bx bx-list-ul'></i>
+                        <span>Key Definitions</span>
+                    </button>
+                    <button class="quick-prompt-btn" data-prompt="Design 3 multiple-choice study questions with answers based on the content of this file.">
+                        <i class='bx bx-help-circle'></i>
+                        <span>Quiz Me</span>
+                    </button>
+                    <button class="quick-prompt-btn" data-prompt="Explain the most complex or technical section of this document using simplified, easy-to-understand language.">
+                        <i class='bx bx-extension'></i>
+                        <span>Simplify Concept</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <span class="status-dot online"></span>
+                    <span>Gemini Core Active</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Conversational Interface -->
+        <main class="main-content">
+            <!-- Glassmorphic Header -->
+            <header class="app-header">
+                <div class="header-info">
+                    <h1>Educator Workspace</h1>
+                    <p id="header-doc-status">No active document loaded</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-clear-chat" id="btn-clear-chat" title="Clear chat history">
+                        <i class='bx bx-brush-alt'></i>
+                        <span>Clear Chat</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Chat Space -->
+            <div class="chat-viewport" id="chat-viewport">
+                <!-- Welcome/Landing View -->
+                <div class="welcome-container" id="welcome-container">
+                    <div class="welcome-inner">
+                        <div class="welcome-icon">
+                            <i class='bx bx-bot'></i>
+                        </div>
+                        <h2>Let's Start Learning</h2>
+                        <p class="welcome-subtitle">Transform your textbook, academic paper, or report into an interactive study experience.</p>
+                        
+                        <div class="welcome-steps">
+                            <div class="step-card">
+                                <div class="step-icon"><i class='bx bx-file'></i></div>
+                                <h4>1. Load Document</h4>
+                                <p>Drag and drop your PDF into the document hub in the sidebar.</p>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-icon"><i class='bx bx-chat'></i></div>
+                                <h4>2. Ask Questions</h4>
+                                <p>Type natural language queries, seek insights, or extract summaries.</p>
+                            </div>
+                            <div class="step-card">
+                                <div class="step-icon"><i class='bx bx-medal'></i></div>
+                                <h4>3. Master Content</h4>
+                                <p>Interact with AI to clarify complex topics and review study notes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Chat Stream -->
+                <div class="chat-stream" id="chat-stream" style="display: none;"></div>
+            </div>
+
+            <!-- Input Bar Panel -->
+            <div class="input-panel">
+                <div class="input-container">
+                    <form id="ask-form">
+                        <div class="input-bar-wrapper">
+                            <input type="text" id="question-input" placeholder="Upload a document to begin asking questions..." autocomplete="off" disabled>
+                            <button type="submit" id="btn-submit-question" disabled>
+                                <i class='bx bx-send send-icon'></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="input-footer">
+                    <span>Intelligent AI Education Workspace • Context-Aware Responses</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Logic Script -->
+    <script>
+        // DOM Elements Selection
+        const dropZone = document.getElementById('drop-zone');
+        const pdfFile = document.getElementById('pdf-file');
+        const uploadStatus = document.getElementById('upload-status');
+        const fileInfoContainer = document.getElementById('file-info-container');
+        const activeFilename = document.getElementById('active-filename');
+        const activeStatus = document.getElementById('active-status');
+        const btnClearFile = document.getElementById('btn-clear-file');
+        const headerDocStatus = document.getElementById('header-doc-status');
+        
+        const askForm = document.getElementById('ask-form');
+        const questionInput = document.getElementById('question-input');
+        const btnSubmitQuestion = document.getElementById('btn-submit-question');
+        const chatViewport = document.getElementById('chat-viewport');
+        const chatStream = document.getElementById('chat-stream');
+        const welcomeContainer = document.getElementById('welcome-container');
+        const btnClearChat = document.getElementById('btn-clear-chat');
+        
+        const quickPromptBtns = document.querySelectorAll('.quick-prompt-btn');
+
+        let isDocumentLoaded = false;
+
+        // Toggle state function for chat input
+        function setChatState(enabled, placeholderText = "Ask anything about the document...") {
+            questionInput.disabled = !enabled;
+            btnSubmitQuestion.disabled = !enabled;
+            questionInput.placeholder = placeholderText;
+            if (enabled) {
+                questionInput.focus();
+            }
+        }
+
+        // --- 1. Handle Document Upload with Drag and Drop ---
+        
+        // Trigger file input dialog
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('drag-active');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('drag-active');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('drag-active');
+            if (e.dataTransfer.files.length > 0) {
+                handleFileUpload(e.dataTransfer.files[0]);
+            }
+        });
+
+        pdfFile.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileUpload(e.target.files[0]);
+            }
+        });
+
+        async function handleFileUpload(file) {
+            if (!file.name.endsWith('.pdf')) {
+                showUploadMessage("Error: Only PDF documents are allowed.", "error");
+                return;
+            }
+
+            // Show uploading state
+            showUploadMessage("<i class='bx bx-loader-alt bx-spin'></i> Uploading and indexing document... (This may take up to a few minutes for larger files)", "info");
+            dropZone.style.display = 'none';
+            fileInfoContainer.style.display = 'block';
+            activeFilename.textContent = file.name;
+            activeStatus.innerHTML = "<i class='bx bx-loader-alt bx-spin'></i> Uploading...";
+            headerDocStatus.textContent = `Processing: ${file.name}`;
+            
+            const formData = new FormData();
+            formData.append("pdf_file", file);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showUploadMessage("<i class='bx bxs-check-circle'></i> Document loaded successfully!", "success");
+                    activeStatus.innerHTML = "<i class='bx bxs-check-circle'></i> Ready";
+                    activeStatus.style.color = "var(--success)";
+                    headerDocStatus.textContent = file.name;
+                    isDocumentLoaded = true;
+                    setChatState(true);
+                } else {
+                    showUploadMessage(data.error || "Upload failed", "error");
+                    resetUploadWorkspace();
+                }
+            } catch (error) {
+                showUploadMessage("Network error during file processing.", "error");
+                resetUploadWorkspace();
+            }
+        }
+
+        function showUploadMessage(msg, type) {
+            uploadStatus.innerHTML = msg;
+            uploadStatus.className = `status-msg ${type}`;
+            uploadStatus.style.display = 'flex';
+        }
+
+        function resetUploadWorkspace() {
+            isDocumentLoaded = false;
+            dropZone.style.display = 'block';
+            fileInfoContainer.style.display = 'none';
+            pdfFile.value = '';
+            headerDocStatus.textContent = 'No active document loaded';
+            setChatState(false, "Upload a document to begin asking questions...");
+        }
+
+        btnClearFile.addEventListener('click', () => {
+            resetUploadWorkspace();
+            showUploadMessage("Document cleared.", "info");
+            setTimeout(() => {
+                uploadStatus.style.display = 'none';
+            }, 3000);
+        });
+
+        // --- 2. Chat Conversation Handling ---
+
+        askForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const question = questionInput.value.trim();
+            if (!question) return;
+
+            // Clear input and blur
+            questionInput.value = '';
+            
+            // Switch landing screen to chat stream
+            if (chatStream.style.display === 'none') {
+                welcomeContainer.style.display = 'none';
+                chatStream.style.display = 'flex';
+            }
+
+            // Append User message
+            appendMessage(question, 'user');
+            
+            // Append AI Typing placeholder
+            const typingBubble = appendTypingIndicator();
+            scrollToBottom();
+
+            try {
+                const response = await fetch('/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question: question })
+                });
+
+                const data = await response.json();
+                
+                // Remove typing indicator
+                typingBubble.remove();
+
+                if (response.ok) {
+                    appendMessage(data.answer, 'ai');
+                } else {
+                    appendMessage(`Error: ${data.error || "Failed to generate response."}`, 'ai error-bubble');
+                }
+            } catch (error) {
+                typingBubble.remove();
+                appendMessage("Failed to connect to the AI service. Please verify network.", 'ai error-bubble');
+            }
+            scrollToBottom();
+        });
+
+        // Append typing indicator bubble
+        function appendTypingIndicator() {
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-message ai typing';
+            bubble.innerHTML = `
+                <div class="message-avatar">
+                    <i class='bx bx-bot'></i>
+                </div>
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            `;
+            chatStream.appendChild(bubble);
+            return bubble;
+        }
+
+        // Append text message bubble
+        function appendMessage(text, sender) {
+            const bubble = document.createElement('div');
+            bubble.className = `chat-message ${sender}`;
+            
+            const isUser = sender === 'user';
+            const icon = isUser ? 'bx-user' : 'bx-bot';
+            const formattedText = isUser ? escapeHTML(text) : formatMarkdown(text);
+
+            bubble.innerHTML = `
+                <div class="message-avatar">
+                    <i class='bx ${icon}'></i>
+                </div>
+                <div class="message-content">
+                    <div class="message-body">${formattedText}</div>
+                </div>
+            `;
+            chatStream.appendChild(bubble);
+        }
+
+        // Helper: Escape HTML strings to prevent injection
+        function escapeHTML(text) {
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+        }
+
+        // Helper: Format basic Markdown string to HTML elements
+        function formatMarkdown(text) {
+            let formatted = escapeHTML(text);
+
+            // Bold: **text** -> <strong>text</strong>
+            formatted = formatted.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+            // Code blocks: ```code``` -> <pre><code>code</code></pre>
+            formatted = formatted.replace(/```([\s\S]*?)```/g, "<pre><code>$1</code></pre>");
+
+            // Inline code: `code` -> <code>code</code>
+            formatted = formatted.replace(/`(.*?)`/g, "<code>$1</code>");
+
+            // Bullet lists: lines starting with * or - -> <li>
+            const lines = formatted.split("\n");
+            let inList = false;
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (line.startsWith("* ") || line.startsWith("- ")) {
+                    const content = line.substring(2);
+                    if (!inList) {
+                        lines[i] = "<ul><li>" + content + "</li>";
+                        inList = true;
+                    } else {
+                        lines[i] = "<li>" + content + "</li>";
+                    }
+                } else {
+                    if (inList) {
+                        lines[i - 1] += "</ul>";
+                        inList = false;
+                    }
+                }
+            }
+            if (inList) {
+                lines[lines.length - 1] += "</ul>";
+            }
+
+            formatted = lines.join("\n");
+
+            // Format paragraphs
+            formatted = formatted.replace(/\n\n/g, "</p><p>");
+            formatted = formatted.replace(/\n/g, "<br>");
+            
+            // Clean up list/code spacing
+            formatted = formatted.replace(/<\/li><br>/g, "</li>");
+            formatted = formatted.replace(/<\/ul><br>/g, "</ul>");
+            formatted = formatted.replace(/<pre><code><br>/g, "<pre><code>");
+            formatted = formatted.replace(/<br><\/code><\/pre>/g, "</code></pre>");
+
+            return `<p>${formatted}</p>`;
+        }
+
+        function scrollToBottom() {
+            chatViewport.scrollTo({
+                top: chatViewport.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        // Clear Chat Stream
+        btnClearChat.addEventListener('click', () => {
+            chatStream.innerHTML = '';
+            chatStream.style.display = 'none';
+            welcomeContainer.style.display = 'flex';
+        });
+
+        // Quick action prompt clicks
+        quickPromptBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!isDocumentLoaded) {
+                    showUploadMessage("<i class='bx bxs-warning'></i> Please load a document first!", "warning");
+                    return;
+                }
+                const promptText = btn.getAttribute('data-prompt');
+                questionInput.value = promptText;
+                askForm.dispatchEvent(new Event('submit'));
+            });
+        });
+    </script>
+</body>
+</html>
