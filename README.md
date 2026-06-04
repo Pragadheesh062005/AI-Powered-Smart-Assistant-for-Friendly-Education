@@ -2,8 +2,7 @@
 
 AI-Powered-Smart-Assistant-for-Friendly-Education is an AI-powered learning assistant that helps students interact with their study materials more effectively. Users can upload PDF documents, ask questions in natural language, generate summaries, and create quizzes from their notes. The system uses Retrieval-Augmented Generation (RAG) to provide accurate and context-aware responses based on uploaded content.
 
-#🚀 Features
-
+🚀 Features
   📚 Upload and process PDF study materials
   ❓ Ask questions from uploaded documents
   📝 Generate concise summaries of notes
@@ -11,7 +10,7 @@ AI-Powered-Smart-Assistant-for-Friendly-Education is an AI-powered learning assi
   🔍 Semantic search using vector embeddings
   💬 Interactive AI-powered chat interface
 
-#🛠️ Tech Stack
+🛠️ Tech Stack
     Frontend
       React.js
       HTML5
@@ -28,7 +27,7 @@ AI-Powered-Smart-Assistant-for-Friendly-Education is an AI-powered learning assi
     Document Processing
       PyMuPDF
       
-#🏗️ System Architecture
+🏗️ System Architecture
 
 User Uploads PDF
 ↓
@@ -53,14 +52,14 @@ Output Image:<img width="1920" height="939" alt="Screenshot 2026-06-04 190606" s
 
 
 
-#🎯 Usage
+🎯 Usage
  Upload a PDF document.
  Wait for the document to be processed.
  Enter questions related to the uploaded material.
  Receive AI-generated answers based on document content.
  Generate summaries and quizzes for revision.
 
-#📈 Future Enhancements
+📈 Future Enhancements
  Voice-based interaction
  Multi-language support
  Study progress tracking dashboard
